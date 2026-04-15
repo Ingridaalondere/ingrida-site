@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/metachronicles.html", "destination": "/metachronicles.html" },
+    { "source": "/metachronicles", "destination": "/metachronicles.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

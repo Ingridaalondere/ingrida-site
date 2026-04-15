@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>Metachronicles – Ingrida Alonderė</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" crossorigin href="/assets/index-BFOmgi5y.css">
+    <style>
+        :root {
+            --background: oklch(100% 0 0);
+            --foreground: oklch(20.8% 0.042 265.755);
+            --muted-foreground: oklch(44.6% 0.043 257.281);
+            --accent: oklch(54.6% 0.245 262.881);
+            --border: oklch(92% 0.005 258);
+        }
+        body {
+            background-color: var(--background);
+            color: var(--foreground);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+        }
+        .nav-container {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 50;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--foreground);
+            text-decoration: none;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-link {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--foreground);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: var(--accent);
+        }
+        .language-switcher {
+            display: flex;
+            gap: 0.5rem;
+            border-left: 1px solid var(--border);
+            padding-left: 2rem;
+        }
+        .lang-btn {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--muted-foreground);
+            transition: color 0.3s;
+            padding: 0.25rem 0.5rem;
+        }
+        .lang-btn.active {
+            color: var(--accent);
+        }
+        .lang-btn:hover {
+            color: var(--foreground);
+        }
+        .main-content {
+            max-width: 800px;
+            margin: 8rem auto 4rem;
+            padding: 0 2rem;
+        }
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .page-subtitle {
+            font-size: 1.125rem;
+            color: var(--muted-foreground);
+            text-align: center;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .metachronicle-item {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        .metachronicle-item:last-child {
+            border-bottom: none;
+        }
+        .metachronicle-status {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted-foreground);
+            margin-bottom: 1rem;
+            display: block;
+        }
+        .metachronicle-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--foreground);
+        }
+        .metachronicle-preview {
+            font-size: 0.95rem;
+            color: var(--muted-foreground);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: 1rem;
+            transition: gap 0.3s;
+            cursor: pointer;
+        }
+        .read-more:hover {
+            gap: 0.75rem;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+        }
+        .modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 2rem;
+        }
+        .modal-content {
+            background-color: var(--background);
+            padding: 3rem;
+            border-radius: 0.5rem;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.3s;
+        }
+        .modal-close:hover {
+            color: var(--foreground);
+        }
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            padding-right: 2rem;
+        }
+        .modal-body {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--foreground);
+        }
+        .modal-body p {
+            margin-bottom: 1rem;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        footer {
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--muted-foreground);
+            font-size: 0.75rem;
+        }
+        .hidden {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .page-title { font-size: 2.5rem; }
+            .language-switcher {
+                border-left: none;
+                padding-left: 0;
+            }
+            .nav-right {
+                gap: 1rem;
+            }
+            .modal-content {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-container">
+        <div class="nav-content">
+            <a href="/" class="logo">Ingrida Alonderė</a>
+            <div class="nav-right">
+                <div class="nav-links">
+                    <a href="/#about" class="nav-link" data-en="About" data-lt="Apie">About</a>
+                    <a href="/#projects" class="nav-link" data-en="Work" data-lt="Veikla">Work</a>
+                    <a href="/#talks" class="nav-link" data-en="Research" data-lt="Tyrimai">Research</a>
+                    <a href="/metachronicles.html" class="nav-link" style="color: var(--accent)" data-en="Metachronicles" data-lt="Metakronikos">Metachronicles</a>
+                    <a href="/#contact" class="nav-link" data-en="Contact" data-lt="Kontaktai">Contact</a>
+                </div>
+                <div class="language-switcher">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="lt">LT</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <h1 class="page-title" data-en="METACHRONICLES" data-lt="KONCERTŲ METAKRONIKOS">METACHRONICLES</h1>
+        <p class="page-subtitle" data-en="Concert Metachronicles — subjective, slightly analytical, and fully alive reflections on music, performance, and the spaces in between." data-lt="Koncertų metakronikos — subjektyvios, šiek tiek analitinės ir pilnai gyvos refleksijos apie muziką, pasirodymą ir tarpus tarp jų.">
+            Concert Metachronicles — subjective, slightly analytical, and fully alive reflections on music, performance, and the spaces in between.
+        </p>
+
+        <div id="metachronicles-list">
+            <!-- Items will be inserted here -->
+        </div>
+    </main>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <h2 id="modal-title" class="modal-title"></h2>
+            <div id="modal-body" class="modal-body"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Ingrida Alonderė. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const metachronicles = [{"id": 6, "year": "2026", "title_en": "Metachronicle No. 6 — I Am Čiurlionis", "title_lt": "Koncertų metakronikos Nr. 6 — Aš esu Čiurlionis", "content_en": "\n<p>This evening, Kernavė Street in Vilnius ceased to be a geographical location and became a portal into the subconscious of a genius. I went to the premiere of Anželika Cholina's The Tale of Kings without any particular intention to analyse—just to be. But at some point, I caught myself thinking: I am no longer a spectator. I am Čiurlionis. With my whole being. Every cell.</p>\n<p>It is a rare experience when a performance does not unfold in front of you, but within you. Not as a story about something, but as a state that takes hold of you. And that state was not drama, not narrative, not form—but love. Not comfortable, not decorative, but deep, sometimes painful, and completely all-encompassing.</p>\n<p><strong>The architecture of genius: A. Cholina</strong></p>\n<p>Anželika Cholina's direction operates here as a precisely calibrated emotional mechanism. She controls not only the bodies on stage, but also the inner direction of the viewer. This is not dance you observe—it is a psychological X-ray in which you yourself become visible. Music, movement, costume, and light do not complement one another; they merge into a single fabric without seams.</p>\n<p><strong>Between ballet and modernity</strong></p>\n<p>The choreographic language holds an exact sense of balance. The freedom of contemporary dance meets the discipline of ballet, and it is precisely in this tension that something internal emerges. It feels as though the body itself is negotiating Čiurlionis' conflict—between earthbound existence and the constant urge to transcend. Movement here is not beautiful for the sake of beauty—it is necessary, as if the only possible language for what is happening inside.</p>\n<p><strong>Love as the axis of the universe</strong></p>\n<p>There is much drama in the performance, yet it never collapses into surface-level emotional effect. This is not drama for the sake of drama, but deep psychological density—the moment when a human being can no longer contain their inner tension. Love is not a narrative thread here; it is the structural foundation of everything. Love for a woman, for creation, for vision, for Lithuania—but above all, love as a state through which everything unfolds.</p>\n<p><strong>The sacredness of sound and letters (and one biased confession)</strong></p>\n<p>Donatas Zakarauskas' Letters to Sofija, performed by the choir Jauna Muzika, is not a background element but the gravitational centre of the entire work. If Cholina visually opens you, this music seals you inside, in a space from which you neither wish nor manage to escape. Every note is not an illustration, but the act of painting itself—happening here and now.</p>\n<p>I must admit: my objectivity capitulated. Jauna Muzika is too close to my heart, and I deeply love this piece. Attempting to remain a \"cold critic\" here was as futile as trying to ignore the woman in row 17 of the amphitheatre, rhythmically rustling something inside a plastic bag. Even though that sound almost qualified as an avant-garde accompaniment, the music remained the core of the performance—the only true breath.</p>\n<p><strong>Visuality as breathing</strong></p>\n<p>The scenography, costumes, and lighting function so organically that it feels unnecessary to separate them into individual elements. There is no excess, no demonstrative beauty—only a consistent intensification of feeling. The visual layer does not compete with movement; it breathes alongside it.</p>\n<p><strong>Cultural dribbling</strong></p>\n<p>After the performance, I overheard a man sigh: \"How dramatic… and I still want to make it in time to watch Žalgiris play.\" There was something profoundly true in that. After such emotional density, one longs for something that returns the body to rhythm, to something simpler—perhaps even to three-point shots. Paradoxically, that may be the highest compliment to Anželika Cholina: to create a state from which the viewer needs an entirely different world in order to return to their own.</p>\n<p><strong>My inner conclusion</strong></p>\n<p>I left not with thoughts, but with a state. With the feeling that, for a moment, I was not observing, but part of what was happening. Perhaps not even part of the performance—but part of the time in which Čiurlionis himself once lived.</p>\n<p>There are works you evaluate. There are works you remember. And then there are works that allow you, briefly, to become someone else—and after that, you are no longer quite the same.</p>\n<p>Thank you to all the artists and the creative team. Thank you, Anželika Cholina. Good night.</p>\n<p>P.S. When dance, music, and visual art merge into one whole, even from row 17 you feel as if you are at the very centre of Čiurlionis' thought.</p>\n", "content_lt": "\n<p>Šįvakar Kernavės gatvė Vilniuje tapo nebe geografine vieta, o portalu į genijaus pasąmonę. Ėjau į Anželikos Cholinos premjerą „Karalių pasaka“ be ypatingo noro analizuoti – tiesiog pabūti. Bet kažkuriuo momentu pagavau save galvojant: aš nebe žiūrovė. Aš esu Čiurlionis. Visa savo esybe, kiekviena ląstele.</p>\n<p>Tai retas jausmas, kai spektaklis vyksta ne prieš tave, o tavyje. Ne kaip istorija apie kažką, o kaip būsena, kuri tave perima. Ir ta būsena buvo ne drama, ne siužetas, ne forma – o meilė. Ne patogi, ne dekoratyvi, o gili, kartais skaudi, bet absoliučiai viską persmelkianti.</p>\n<p><strong>Genialumo architektūra: A. Cholina</strong></p>\n<p>Anželikos Cholinos režisūra čia veikia kaip tiksliai sureguliuotas emocinis mechanizmas. Ji valdo ne tik scenos kūnus, bet ir žiūrovo vidinę kryptį. Tai ne šokis, kurį stebi – tai psichologinis rentgenas, kuriame pats tampi matomas. Muzika, judesys, kostiumas ir šviesa ne papildo vienas kitą, o susilieja į vieną audinį, kuriame nebelieka siūlių.</p>\n<p><strong>Šokis tarp baleto ir modernumo</strong></p>\n<p>Choreografinė kalba – itin tikslus balanso jausmas. Modernaus šokio laisvė susitinka su baleto disciplina, ir būtent tame susidūrime gimsta vidinė įtampa. Atrodo, kad pats kūnas scenoje sprendžia Čiurlionio konfliktą – tarp žemiškumo ir nuolatinio troškimo pakilti. Judesys čia nėra gražus dėl grožio – jis būtinas, tarsi vienintelė įmanoma kalba tam, kas vyksta viduje.</p>\n<p><strong>Meilė kaip visatos ašis</strong></p>\n<p>Spektaklyje daug dramos, bet ji niekada nevirsta paviršiniu emociniu efektu. Tai ne drama dėl dramos, o giluminė psichologija – tas momentas, kai žmogus nebeištveria savo vidinės įtampos. Meilė čia nėra siužeto linija – ji yra visos struktūros pagrindas. Meilė moteriai, kūrybai, vizijai, Lietuvai – bet svarbiausia, meilė kaip būsena, per kurią viskas vyksta.</p>\n<p><strong>Garsų ir laiškų sakralumas (bei viena šališka išpažintis)</strong></p>\n<p>Donato Zakaro „Laiškai Sofijai“, įdainuoti choro „Jauna muzika“, čia ne fonas, o spektaklio gravitacijos centras. Jei Cholina tave vizualiai „atidaro“, tai ši muzika „užrakina“ viduje, iš kur pabėgti nei norisi, nei pavyktų. Kiekviena nata – ne iliustracija, o pats paveikslo kūrimas čia ir dabar.</p>\n<p>Prisipažinsiu: mano objektyvumas kapituliavo. „Jauna muzika“ man per arti širdies, o šį kūrinį tiesiog dievinu. Tad bandymas būti „šalta kritike“ čia buvo toks pat beviltiškas, kaip bandymas ignoruoti kaimynę amfiteatro 17-oje eilėje, kuri ritmiškai krapštė kažką iš maišelio. Nors tas šiugždesys pretendavo į avangardinį akompanimentą, muzika vis tiek liko spektaklio šerdimi ir vieninteliu kvėpavimu.</p>\n<p><strong>Vizualika kaip kvėpavimas</strong></p>\n<p>Scenografija, kostiumai ir šviesa veikia taip organiškai, kad jų net nesinori išskirti kaip atskirų elementų. Nėra pertekliaus, nėra demonstratyvaus grožio – tik nuoseklus jausmo stiprinimas. Vizualika čia nekonkuruoja su judesiu, o kvėpuoja kartu su juo.</p>\n<p><strong>Kultūrinis „driblingas“</strong></p>\n<p>Po spektaklio nugirstas vyriškas atodūsis: „Kaip dramatiška... o aš dar noriu spėti pažiūrėti, kaip „Žalgiris“ lošia.“ Ir kažkaip tame buvo labai daug tiesos. Po tokios emocinės koncentracijos norisi kažko, kas grąžintų į kūną, į ritmą, į paprastesnę įtampą. Gal net į tritaškius. Paradoxaliai, tai turbūt ir yra komplimentas Anželikai Cholinai – sukurti tokią būseną, po kurios žiūrovui prireikia visai kito pasaulio, kad galėtų sugrįžti į savąjį.</p>\n<p><strong>Mano vidinis reziumė</strong></p>\n<p>Išėjau ne su mintimis, o su būsena. Su jausmu, kad trumpam buvau ne žiūrovė, o dalis to, kas vyko. Ir gal net ne dalis spektaklio – o dalis to laiko, kuriame iš tikrųjų gyveno Čiurlionis.</p>\n<p>Yra kūrinių, kuriuos vertini. Yra tokių, kuriuos prisimeni. O yra tokių, kurie leidžia trumpam pabūti kažkuo kitu – ir tada jau nebegrįžti visai toks pats.</p>\n<p>Ačiū visiems artistams ir kūrybinei komandai. Ačiū Anželika Cholina. Labanakt.</p>\n<p>P. S. Kai šokis, muzika ir dailė susijungia į vieną visumą, net ir sėdėdama 17 eilėje jautiesi esanti pačiame Čiurlionio minties centre.</p>\n"}, {"id": 5, "year": "2026", "title_en": "Metachronicle No. 5 — Prayer for the World", "title_lt": "Koncertų Metakronikos Nr. 5 — Malda už pasaulį", "content_en": "\n<p>15 February 2026, Bernardine Church, Vilnius. Prayer for the World. Final concert of the 21st International Course for Choir Conducting and Interpretation.</p>\n<p>A laboratory. Sounds serious. As if someone is about to measure harmonies under a microscope and check whether Byrd complies with ISO standards. But in reality, it is a week when a choir becomes a living organism, and conductors learn to breathe not only with the score, but with 25+ people—each of whom has their own opinion about tempo.</p>\n<p>And yes, Jauna Muzika is my favourite choir. I am biased. And perfectly at peace with that.</p>\n<p>Povilas Vanžodis opened the evening with W. Byrd's Sing Joyfully. Light, fluid, luminous. The kind of conducting that does not need to demonstrate control, because everyone already feels safe. Byrd here was not a polyphonic task—it was breathing. The piece passed like a bright dream, and the space of the Bernardines caught that light.</p>\n<p>Tallis demands stillness. And Gustas Kuskevičius attempted to create that stillness with great honesty. There was a sense that, internally, he was thinking: \"Okay. I am calm. I am very calm.\" Meanwhile, the choir seemed to be thinking: \"We are calm too. Everyone is calm. Calmness is happening.\" And you know what? It worked.</p>\n<p>Stephen Layton entered as if the Bernardines were his living room. Not arrogantly. Just… naturally. The kind of person who proves nothing, yet everyone listens. Gestures economical. No \"look at how I conduct.\" Just music. And somehow, suddenly, everyone becomes better. Sometimes calmness is the strongest interpretation.</p>\n<p>Neringa Sidaugaitė with C. V. Stanford's Justorum animae. A text about the souls of the just in God's hands—about peace and light. The conducting was assured, structurally clear. At times it felt as though the choir became even more expressive than the conductor herself—but perhaps that was just a game of my own ear. Still, Stanford sounded elegant, without excess pathos, with an inner glow.</p>\n<p>Mantvydas Drūlia, with Stanford's Beati quorum via, encountered slow, expansive dynamics. At the beginning, there was searching—uncertain chords. The church is full. People walking at the back. Someone rocking a baby in a stroller. And in that moment, Stanford is sounding. There is something deeply beautiful in the coexistence of high-level sacred music and very earthly life happening at the same time. A reminder that none of this is meant for a museum.</p>\n<p>Gintarė Barisaitė-Mitkuvienė, with Stanford's Coelos ascendit hodie, offered a technical, disciplined approach. The piece requires it. Still, at times there was a lack of collectedness at the ends of phrases—they slightly overlapped with new entries. The final moment, which should have lifted, settled more earthly than expected. Yet it remained an honest engagement with complex material.</p>\n<p>Gabriel Jackson's Cecilia Virgo, conducted by S. Layton, raised the temperature. Harmonically dense, shifting, dedicated to St Cecilia—the patron saint of music. This required real concentration. Jackson's harmonies are such that one second you think, \"All is well,\" and the next—\"Wait, where are we now?\" And then Layton gives a gesture—and everything falls back into place. A subtle sense of: I know where we are going.</p>\n<p>James MacMillan's Christus Vincit brought a wave of energy. Tension, drive, dramaturgy. MacMillan is the kind of composer who says: \"There will be energy.\" And then—there is energy. The sopranos rise in such a way that, for a moment, you wonder whether the vaults are prepared for it. Spoiler: they are.</p>\n<p>Jonathan Harvey's I Love the Lord—very quiet, very intimate. \"I love the Lord, because He hath heard my voice…\" A simple sentence—until it is sung as it should be, and then it is no longer simple. The music here does not shout \"look at us,\" but quietly says \"listen.\" The opening—unified, pure. The piano passages held with such patience that even coughing felt inappropriate. There was a real sense of partnership—the conductor and choir were not leading and following, but breathing together.</p>\n<p>Herbert Howells' Requiem—calmly, with a tuning fork in hand, without any theatrical \"now it will be very serious.\" The music is subtle, a fragile kind of light. Not about effect, but about dwelling. Much silence, much sensitivity, much inner concentration. And here, Jauna Muzika were not simply precise—they were so focused that even the air in the Bernardines seemed to slow down.</p>\n<p>The entire concert was demanding—polyphonically, structurally, harmonically, emotionally. This was not easy Sunday repertoire, but music that requires maturity. And I sit there, trying to be a professional observer. Trying to analyse texture, dynamics, interpretative decisions… And then I catch myself thinking: How much I love them. Very objective.</p>\n<p>Thank you to the course leader Stephen Layton—for calmness, clarity, and that rare ability to make complex music transparent. Thank you to the Lithuanian National Cultural Centre for a week of process rather than formality. Thank you to the active conductors for their courage and work. To artistic director Vaclovas Augustinas—for preparing the choir, supporting it, and being present. And most importantly—to the ensemble Jauna Muzika, which can do more than everything. Which can be an instrument, a partner, and a prayer at once. And most of all—to the choir management: Simona Zajančauskaitė and Asta Balnionytė-Grajevskė. Your work is essential. Without you, there would be neither this calmness nor this level of professionalism.</p>\n<p>I left the Bernardines with the feeling that if it were possible to sign a long-term love contract with a choir—I would have done it already. Without fine print. Without an expiration date. And yes. I am very biased.</p>\n", "content_lt": "\n<p>2026 m. vasario 15 d., Bernardinų bažnyčia. „Malda už pasaulį“. XXI choro muzikos dirigavimo ir interpretavimo kursų baigiamasis koncertas.</p>\n<p>Laboratorija. Skamba rimtai. Lyg kažkas tuoj matuos harmonijas mikroskopu ir tikrins, ar Byrdas atitinka ISO standartus. Bet iš tikrųjų – tai savaitė, kai choras tampa gyvu organizmu, o dirigentai mokosi kvėpuoti ne tik su partitura, bet ir su 25+ žmonių, kurie turi savo nuomonę apie tempą.</p>\n<p>Ir taip, „Jauna muzika“ – mano mylimiausias choras. Esu šališka. Ir gyvenu su tuo puikiai.</p>\n<p>Povilas Vanžodis atidarė vakarą su W. Byrd „Sing joyfully“. Lengvai, sklandžiai, šviesiai. Toks dirigavimas, kai nereikia demonstruoti kontrolės, nes visi jaučiasi saugiai. Byrdas čia nebuvo polifoninė užduotis – jis buvo kvėpavimas. Kūrinys praskriejo kaip šviesi svajonė, o Bernardinų erdvė tą šviesą pagavo.</p>\n<p>Tallis reikalauja ramybės. Ir Gustas Kuskevičius tą ramybę labai sąžiningai bandė sukurti. Buvo toks jausmas, kad jis viduje galvoja: „Gerai. Aš ramus. Aš labai ramus.“ O choras tuo metu galvojo: „Mes irgi ramūs. Visi ramūs. Ramybė vyksta.“ Ir žinot ką? Suveikė.</p>\n<p>Stephen Layton atėjo taip, lyg Bernardinai būtų jo svetainė. Ne arogantiškai. Tiesiog… natūraliai. Toks žmogus, kuris nieko neįrodinėja, bet visi vis tiek klausosi. Mostai ekonomiški. Jokio „žiūrėkite, kaip aš diriguoju“. Tik muzika. Ir kažkaip staiga visi tampa geresni. Kartais ramybė yra stipriausia interpretacija.</p>\n<p>Neringa Sidaugaitė su C. V. Stanford „Justorum animae“. Tekstas – apie teisiųjų sielas Dievo rankoje, apie ramybę ir šviesą. Dirigavimas užtikrintas, struktūriškai aiškus. Kartais atrodė, kad choras tampa net išraiškingesnis nei pati dirigentė – bet gal tik mano ausies žaidimas. Tačiau Stanford suskambo elegantiškai, be patoso pertekliaus, su vidine šviesa.</p>\n<p>Mantvydas Drūlia su Stanford „Beati quorum via“ susidūrė su lėta, plačia dinamika. Pradžioje jautėsi ieškojimas, neužtikrinti akordai. Bažnyčia pilna. Gale vaikšto žmonės. Kažkas sūpuoja kūdikį vežime. Ir tuo metu skamba Stanford. Yra kažkas labai gražaus tame, kad aukšto lygio sakralinė muzika ir labai žemiškas gyvenimas vyksta tuo pačiu metu. Tarsi priminimas, kad visa tai – ne muziejui.</p>\n<p>Gintarė Barisaitė-Mitkuvienė su Stanford „Coelos ascendit hodie“ pasiūlė technišką, disciplinuotą vedimą. Kūrinys to reikalauja. Vis dėlto kartais trūko sukauptumo frazių pabaigose, jos šiek tiek vėlėsi su naujais įėjimais. Finalas, kuris turėjo pakilti, nusileido žemiškiau nei norėjosi. Tačiau tai buvo sąžiningas darbas su sudėtinga medžiaga.</p>\n<p>Gabriel Jackson „Cecilia Virgo“, diriguojant S. Layton, pakėlė temperatūrą. Harmoniškai sudėtingas, slenkantis kūrinys apie šv. Ceciliją – muzikos globėją. Čia jau reikėjo tikro koncentracijos lygio. Jackson harmonijos tokios, kad vieną sekundę galvoji: „Viskas gerai“, o kitą – „Palaukit, kur mes dabar?“ Ir tada Layton mosteli – ir viskas vėl stoja į vietas. Toks subtilus „aš žinau, kur mes einam“ jausmas.</p>\n<p>James MacMillan „Christus Vincit“ atnešė dinaminę bangą. Energija, įtampa, dramaturgija. MacMillan yra tas kompozitorius, kuris sako: „Bus energijos.“ Ir tada energija ateina. Sopranai pakyla taip, kad akimirkai pagalvoji – ar skliautai tam pasiruošę? Spoileris: pasiruošę.</p>\n<p>Jonathan Harvey „I Love the Lord“ – labai tylus, labai asmeniškas kūrinys. „I love the Lord, because He hath heard my voice…“ – sakinys paprastas, bet kai jį dainuoji taip, kaip reikia, jis nustoja būti paprastas. Muzika čia ne šaukia „žiūrėkit į mus“, o tyliai sako „klausykit“. Pradžia – sujungta, švari. Piano vietos – išlauktos taip, kad net kosėti nesinorėjo. Jautėsi tikra partnerystė – dirigentas ir choras ne vedė ir sekė, o kvėpavo kartu.</p>\n<p>Herbert Howells „Requiem“ – ramiai, su kamertonu rankoje, be jokio teatrališko „dabar bus labai rimta“. Muzika subtili, šiek tiek trapios šviesos. Ne apie efektą, o apie išbuvimą. Daug tylos, daug jautrumo, daug vidinės koncentracijos. Ir „Jauna muzika“ čia buvo ne tiesiog tikslūs – jie buvo susikaupę taip, kad net oras Bernardinuose atrodė lėtesnis.</p>\n<p>Visas koncertas buvo sudėtingas – polifoniškai, fraziškai, harmoniškai ir emociškai. Tai nebuvo lengvas sekmadienio repertuaras, o brandos reikalaujanti muzika. Ir aš sėdžiu, bandau būti profesionali stebėtoja. Bandau analizuoti faktūrą, dinamiką, interpretacinius sprendimus.... O tada pagaunu save galvojančią: „Kaip aš juos myliu.“ Labai objektyvu.</p>\n<p>Ačiū kursų vadovui Stephenui Laytonui – už ramybę, už aiškumą, už tą ypatingą gebėjimą iš sudėtingos muzikos padaryti skaidrią. Ačiū LNKC už savaitę proceso, o ne formalumo. Ačiū aktyviesiems dirigentams už drąsą ir darbą. Meno vadovui Vaclovas Augustinas už choro paruošimą, palaikymą ir buvimą kartu. Ir svarbiausia – kolektyvui Choras \"Jauna muzika\", kuris gali daugiau nei viską. Kuris gali būti instrumentas, partneris ir malda vienu metu. Ir svarbiausių svarbiausia choro vadybai – Simona Zajančauskaitė ir Asta Balnionytė-Grajevskė. Jūsų darbas yra esminis. Be jūsų nebūtų nei tokios ramybės, nei tokio profesionalumo.</p>\n<p>Išėjau iš Bernardinų su jausmu, kad jeigu būtų įmanoma pasirašyti ilgalaikę meilės sutartį su choru – aš jau būčiau tai padariusi. Be smulkių šriftų. Be galiojimo termino. Ir taip. Aš labai šališka.</p>\n"}, {"id": 4, "year": "2025", "title_en": "Metachronicle No. 4 — The Sound of Music", "title_lt": "Koncertų Metakronikos Nr. 4 — Muzikos garsai", "content_en": "\n<p>7 December 2025, Lithuanian National Philharmonic. The Sound of Music. A musical. For children. For parents. For grandparents. For everyone who still believes that Sunday noon is the perfect time for education, aesthetics, and the distribution of candy.</p>\n<p>This time, I was not a critic, not a director, not a reviewer—but simply an observer, a listener, and a mother. Almost not working, and completely not interfering with creative ambitions. Because here, as it should be, worked people who have been doing this their entire lives.</p>\n<p><strong>Children — my long-forgotten inner audience</strong></p>\n<p>Throughout the concert, I watched the children and tried to understand what they feel when they enter the Philharmonic: some—serious, like future conductors, others—radiant, others—proudly waving to their parents as if they had just received the title “Little Maestro.” I remember myself at their age—I already felt like an incredibly important part of the collective. Today, those children probably feel the same. Or… maybe not.</p>\n<p><strong>My son's review (4.5 years old)</strong></p>\n<p>After the concert, I asked: — So, what did you like the most? He said: — Nothing. And that final blow to the heart was the most honest evaluation of all. Children do not speak in metaphors. They simply state their reality.</p>\n<p><strong>Visuals, film, and candy — the Jedi toolkit of audience control</strong></p>\n<p>Before the concert, children were given candy. Some got too little, some too much. There were tears. There was triumph. Above the stage—a grotesquely oversized film projected onto the vault. My inner critic whispered quietly: “Perhaps this is to keep the children from getting bored?” And you know what—the concept actually worked. At least as long as blood sugar levels held.</p>\n<p><strong>The organ — a mystery I will carry to the grave</strong></p>\n<p>In the first minutes, it felt as if the organ was still getting acquainted with its part. Or with itself. Or with the acoustics. Or perhaps I simply had a particularly sensitive, critically tuned ear that day. My hearing can sometimes be overly ambitious.</p>\n<p><strong>Choir “Viva Voce” and the young ensemble — enthusiasm that saves the genre</strong></p>\n<p>The children's choir was gentle, alive, and sincere. Those moments when they looked at the conductor with complete trust—those were the purest aesthetic moments of the day. Sometimes music is simply a training ground for trust.</p>\n<p><strong>Ensemble MUSICA HUMANA — professional</strong></p>\n<p>In this colourful, candy-fuelled universe, they were a rock of stability. Maintaining balance, tempo, and dramaturgy—even when the audience existed in its own parallel bubble of sugar-driven expressionism. Conductor Robertas Beinaris—as always, solid, precise, and resistant to the chaos of a children's audience.</p>\n<p><strong>“Edelweiss” — a diplomatic compromise between notes and reality</strong></p>\n<p>The famous song arrives. Everyone waits. I wait too—for tenderness, light, softness. And… well. Let me put it delicately: the song sounded as if Edelweiss were still trying to push its way through the snow. Hesitantly. With a strong winter wind. And slightly exhausted. But you know—sometimes even flowers need time.</p>\n<p><strong>A strange event for children (or perhaps I am the one who does not understand)</strong></p>\n<p>A musical is a celebration. This was more contemplation. More darkness. More film. More attempts to regulate the audience through visual means. I missed light. The children missed it even more. Still—the idea itself was ambitious. And ambition in children's culture is a rare thing.</p>\n<p><strong>Epilogue — what I took with me</strong></p>\n<p>As the children left the hall, some were glowing, others disappointed, others counting their candy. I was counting thoughts. It was not perfect. It was real. Childlike, chaotic, human. And sometimes that is better than a perfectly sterile concert. And you know what? Maybe my son didn't like anything—but I liked watching how the world of young listeners unfolds. And how music, even when it is not liked, still leaves something behind.</p>\n<p>P.S. How good it was to hear Aušra Liutkutė again—thank you.</p>\n", "content_lt": "\n<p>2025 m. gruodžio 7 d., Lietuvos nacionalinė filharmonija. „Muzikos garsai“. Miuziklas. Vaikams. Tėvams. Seneliams. Visiems, kurie dar tiki, kad sekmadienio vidurdienis – pats tinkamiausias metas edukacijai, estetikai ir saldainių dalyboms.</p>\n<p>Šįkart aš buvau ne kritikė, ne direktorė, ne recenzentė – o tiesiog stebėtoja, klausytoja ir mama, beveik nedirbanti ir visiškai nesikišanti į kūrybinius užmojus. Nes čia, kaip ir dera, dirbo žmonės, kurie tai daro visą gyvenimą.</p>\n<p><strong>Vaikai – mano seniai pamiršta vidinė auditorija</strong></p>\n<p>Visą koncertą žiūrėjau į vaikus ir bandžiau suprasti, ką jie jaučia, kai ateina į Filharmoniją: vieni – rimti kaip būsimi dirigentai, kiti – spindintys, treti – išdidžiai mojuojantys tėvams, lyg ką tik būtų pelnę titulą „Mažasis Maestro“. Prisimenu save būnant jų amžiaus – jau tada jaučiausi nepaprastai svarbi kolektyvo dalis. Šiandien tie vaikai turbūt jaučia tą patį. Arba… gal ir ne.</p>\n<p><strong>Mano sūnaus recenzija (4,5 metų)</strong></p>\n<p>Paklausiau po koncerto: – Na, o kas tau labiausiai patiko? Jis: – Niekas. Ir šitas paskutinis smūgis į širdį buvo pats sąžiningiausias vertinimas. Vaikai nekalba metaforomis. Jie tiesiog konstatuoja savo realybę.</p>\n<p><strong>Vizualizacijos, filmas ir saldainiai – mažųjų publikos valdymo džedajų rinkinys</strong></p>\n<p>Prieš koncertą vaikams buvo dalijami saldainiai. Kai kas gavo per mažai, kai kas per daug. Buvo ir ašarų, ir triumfo. Virš scenos – groteskiškai milžiniškas filmas ant skliauto. Mano vidinis kritikas tyliai sušnabždėjo: „Gal čia tam, kad vaikai mažiau nuobodžiautų?“ Ir žinot, konceptas netgi veikė – bent jau kol veikė cukraus lygiai kraujyje.</p>\n<p><strong>Vargonai – paslaptis, kurią su savimi nusinešiu į kapą</strong></p>\n<p>Pirmomis minutėmis atrodė, kad vargonai dar tik susipažįsta su savo partija. Arba su savimi. Arba su akustika. Arba aš tiesiog šiandien turėjau ypatingai jautrią, kritiškai sureguliuotą ausį. Mano klausa kartais būna pernelyg ambicinga.</p>\n<p><strong>Choras „Viva Voce“ ir visa jaunoji trupė – entuziazmas, kuris gelbsti žanrą</strong></p>\n<p>Vaikų choras buvo mielas, gyvas ir nuoširdus. Tie momentai, kai jie žiūrėjo į dirigentą su visišku tikėjimu, buvo pati gryniausia dienos estetika. Kartais muzika – tiesiog didelė pasitikėjimo treniruotė.</p>\n<p><strong>Ansamblis MUSICA HUMANA – profesionalu</strong></p>\n<p>Šitame margame, saldainių ir filmų pamaitintame pasaulyje jie buvo ramybės uola. Išlaikė balansą, tempą, dramaturgiją, net kai auditorija gyveno savo atskirame cukraus-ekspresionizmo burbule. Dirigentas Robertas Beinaris – kaip visada solidus, tikslus ir nepasiduodantis vaikų publikos sukeltai chaosologijai.</p>\n<p><strong>„Edelveis“ epizodas, arba diplomatinis kompromisas tarp natų ir realybės</strong></p>\n<p>Ateina ta garsioji daina. Visi laukia. Aš irgi laukiu – sentimentalumo, šviesos, švelnumo. Ir… hm. Pateiksiu tai subtiliai: daina skambėjo taip, lyg Edelveisas dar tik bandytų prasikalti per sniegą. Nedrąsiai. Stipriai pučiant žiemos vėjui. Ir truputį pavargus. Bet žinot – kartais ir gėlėms reikia laiko.</p>\n<p><strong>Keistas renginys vaikams (bet gal čia aš kažko nesuprantu)</strong></p>\n<p>Miuziklas yra šventė. Čia buvo daugiau kontempliacijos. Ir tamsos. Ir filmo. Ir bandymų sutramdyti publiką vizualinėmis priemonėmis. Man trūko šviesos. Vaikams – dar labiau. Visgi pati idėja – ambicinga. O ambicijos vaikų kultūroje – didelė retenybė.</p>\n<p><strong>Epilogas: ką išsinešiau</strong></p>\n<p>Kai vaikai ėjo iš salės, vieni spindėjo, kiti buvo nusiminę, treti skaičiavo saldainius. Aš – skaičiavau mintis. Nebuvo tobula. Buvo tikra. Vaikiškai, chaotiškai, žmogiškai. O tai kartais geriau nei visiškai sterilus koncertas. Ir žinot ką? Gal mano sūnui ir nepatiko niekas, bet man – patiko stebėti, kaip skleidžiasi mažųjų klausytojų pasaulis. Ir kaip muzika, net jeigu nepatinka, vis tiek kažką palieka.</p>\n<p>P. S. Kaip gera vėl išgirsti Ausra Liutkute ačiū.</p>\n"}, {"id": 3, "year": "2025", "title_en": "Metachronicle No. 3 — Vilnius City Municipal Choir", "title_lt": "Koncertų Metakronikos Nr. 3 — Vilniaus miesto savivaldybės choras", "content_en": "\n<p>Vilnius City Municipal Choir Jauna Muzika. Yes—VILNIUS. CITY. MUNICIPAL. CHOIR. Not “jauna muzika,” not “Vilnius Jauna Muzika,” not “that choir with Augustinas,” but an official city ensemble—which, more often than we would like, is not introduced as such. So, taking this opportunity, I solemnly declare: we are the Vilnius City Municipal Choir. Very official. With registration.</p>\n<p>4 December 2025, St Catherine's Church, Vilnius. Michael Gordon — Travel Guide to Nicaragua. The audience—from music critics to members of Parliament, from cultural figures to people who had perhaps, for the first time in their lives, dared to attend contemporary music. And everyone was… silent. Such moments are rare for us—usually, our audience breathes loudly, lives, moves, tries to participate. But this time—stilled.</p>\n<p>I had a rare privilege: to organise nothing, fix nothing, rearrange nothing—just… observe. And, to be honest, it was a very good experience. Me, biased? Yes. VERY biased. I am the director of the choir. I tried to pretend to be a professional observer. I tried to maintain musicological distance. I tried to control myself and not count how many times my heart fell out of rhythm. I failed. This was one of those concerts where you sit and think: how beautiful it is to be biased.</p>\n<p><strong>The choir</strong></p>\n<p>They looked—and sounded—beautiful. And yes, I say this fully consciously—not only as a director, but as someone who has been watching this ensemble for years and still cannot quite understand how they manage to enter, breathe, and sustain together with such precision. Especially when the music is not a pop song, but a one-hour autobiographical migration epic with post-minimalist rhythmic shifts. Yes—that is what we might call a “fairy tale for adults.” The choir breathed as one body. They were calm where the music demanded calm—and truly radiant where the text delivered its historical blows to the heart.</p>\n<p><strong>Gleb Pyšniak — the moment when the cello begins to breathe</strong></p>\n<p>When Gleb began to play, there was a sense in the hall that something more than a cello solo was about to happen. It felt as though he and Jauna Muzika were old companions, having already completed more than one musical journey together. No competition, no “I am the star”—just an organic, almost intuitive shared breathing. There was a moment when it felt as if the cello was truly speaking with the choir. And the choir answered. A kind of imagined duet that can only exist when everyone is present not for effect, but for essence.</p>\n<p><strong>Conductor — Vaclovas Augustinas</strong></p>\n<p>As always—impeccable. The kind of conductor who does not demand attention. He simply makes everyone else shine. If I were unbiased, I would praise him. But since I am very biased, I will say it directly: his presence at the podium is a quiet miracle.</p>\n<p><strong>Visuals — Laurie Olinder</strong></p>\n<p>This visual language suits St Catherine's Church—darkness, light, passing family photographs, the movement of time. The images were so engaging that at moments I thought the audience might ask for “another season.” But no—everyone remained serious, focused, contemplative. Or perhaps simply very hungry for a strong visual experience.</p>\n<p><strong>Lighting</strong></p>\n<p>At times, it was slightly too dark. Perhaps intentional. Perhaps Advent. Perhaps a strategy to prevent applause at the wrong moments. But the darkness worked—it did not allow escape from the music.</p>\n<p><strong>The music — questions that remain after the concert</strong></p>\n<p>Gordon has a talent for asking questions that cannot be avoided: Who are we? What do ideologies do to people? What happens when family history becomes a document rather than a life? Do we shape our destiny, or are we always being pushed by something beyond us? The choir did not just sing these questions—they carried them. This would not be easy even for seasoned professionals. And yet—they carried it with calm.</p>\n<p><strong>Ending: my biased epilogue</strong></p>\n<p>After the concert, we spoke with the team and the creators about music, stories, and that particular choral breath. And I realised one thing: I love this choir very much. And I am not going to pretend otherwise. This is not a review. This is gratitude. And a very biased sense of pride in being part of this journey.</p>\n<p><strong>Gratitude for the invisible, yet essential work</strong></p>\n<p>This evening, in the form that it took, would not have been possible without the Pax et Bonum team—Sigutė Augustinienė and Vilija Grigonytė—their ideas, consistency, and patience. From the birth of the visual concept, communication with the video artist, technical solutions, the creation of the opening video, to securing additional funding and bringing Michael Gordon himself to Vilnius—this was extensive, complex, and very quietly executed work. For that—sincere gratitude. Concerts like this happen when many people do more than what is written in their job descriptions.</p>\n<p>P.S. Thank you, Simona Zajančauskaitė, for flawless organisation, warmth, and love for what you do. And you do it—very well.</p>\n", "content_lt": "\n<p>Vilniaus miesto savivaldybės choras „Jauna muzika“. Taip – VILNIAUS. MIESTO. SAVIVALDYBĖS. CHORAS. Ne „jauna muzika“, ne „Vilniaus jauna muzika“, ne „tas choras su Augustinu“, bet oficialus miesto kolektyvas, kuris dažniau nei mes patys pamirštamas taip pristatyti. Todėl, pasinaudodama proga, aš iškilmingai pareiškiu: mes – Vilniaus miesto savivaldybės choras. Labai oficialiai. Su registru.</p>\n<p>2025 m. gruodžio 4 d., Šv. Kotrynos bažnyčia. Michael Gordon Travel Guide to Nicaragua. Publika – nuo muzikos kritikų iki Seimo narių, nuo kultūros grandų iki žmonių, kurie pirmą kartą gyvenime išdrįso nueiti į šiuolaikinę muziką. Ir visi buvo… tylūs. Tokių akimirkų pas mus retai pasitaiko – paprastai mūsų klausytojai garsiai kvėpuoja, gyvena, juda, stengiasi prisidėti. Bet šįkart – nuščiuvę.</p>\n<p>Aš šįkart turėjau retą privilegiją: nieko neorganizuoti, nieko negesinti, nieko neperstumdyti, tik… stebėti. Ir, tiesą sakant, tai buvo labai gera patirtis. Aš, šališka? Taip, LABAI ŠALIŠKA. Esu choro direktorė. Bandžiau apsimesti profesionalia stebėtoja. Bandžiau laikytis muzikologinės distancijos. Bandžiau susitvardyti ir nefiksuoti, kiek kartų mano širdis iškrito iš ritmo. Nepavyko. Šis koncertas buvo iš tų, kuriuose sėdi ir galvoji: „kaip gražu būti šališkai“.</p>\n<p><strong>Choras</strong></p>\n<p>Atrodė nuostabiai. Ir taip, sakau tai visiškai sąmoningai – ne tik kaip direktorė, bet ir kaip žmogus, kuris žiūri į šį kolektyvą jau kelintus metus ir vis dar negali susivokti, kaip jie sugeba taip tiksliai įeiti, įkvėpti ir kartu išlaukti. Ypač kai muzika – ne pop daina, o vienos valandos autobiografinis migracijos epas su post-minimalistinėmis ritminėmis slinktimis. Taip, taip skamba „pasaka suaugusiems“. Choras kvėpavo vienu kūnu. Buvo ramūs ten, kur muzika reikalavo ramybės, ir visiškai švytėjo ten, kur tekstai liejo istorinius smūgius į širdį.</p>\n<p><strong>Gleb Pyšniak – tas momentas, kai violončelė pradeda kvėpuoti</strong></p>\n<p>Kai Gleb pradėjo groti, salėje tvyrojo toks jausmas, kad čia įvyks kažkas daugiau nei tiesiog violončelės solo. Atrodė, kad jis ir „Jauna muzika“ yra seni bičiuliai, kurie kartu jau yra įveikę ne vieną muzikinį žygį. Jokios konkurencijos, jokio „aš čia žvaigždė“ – tik organiškas, beveik intuityvus bendras kvėpavimas. Buvo akimirka, kai atrodė, jog violončelė iš tiesų kalbasi su choru. Ir choras atsakė. Toks menamas duetas, kuris gimsta tik tada, kai visi dalyvauja ne dėl efekto, o dėl esmės.</p>\n<p><strong>Dirigentas Vaclovas Augustinas</strong></p>\n<p>Kaip visada – nepriekaištingas. Toks dirigentas, kuris nereikalauja dėmesio. Jis tiesiog padaro, kad visi kiti suspindėtų. Jei būčiau nešališka – pagirčiau. Bet kadangi esu labai šališka, sakau tiesiai: jo buvimas prie pulto yra tylus stebuklas.</p>\n<p><strong>Vizualizacijos – Laurie Olinder</strong></p>\n<p>Tokia vaizdų kalba Šv. Kotrynai tinka – tamsa, šviesa, praeinančios šeimos nuotraukos, laiko slinktys. Vaizdai buvo tokie įtraukiantys, kad kelis kartus pagalvojau, jog publika pradės prašyti „dar vieno sezono“. Bet ne – visi liko rimti, susikaupę ir kontempliatyvūs. Na, arba tiesiog labai pasiilgę stiprios vizualinės dozės.</p>\n<p><strong>Apšvietimas</strong></p>\n<p>Kartais buvo truputį per tamsu. Gal toks sumanymas. Gal tiesiog adventas. Gal norėjo pamigdyti publiką, kad nekiltų plojimai ne vietoje. Bet tamsa tiko – ji neleido pabėgti nuo muzikos.</p>\n<p><strong>Muzika – klausimai, kurie lieka po koncerto</strong></p>\n<p>Gordonas turi talentą užduoti klausimus, nuo kurių nepaspruksi: Kas mes esame? Ką padaro su žmonėmis ideologijos? Kas vyksta, kai šeimos istorija tampa dokumentu, o ne gyvenimu? Ar mes valdome savo likimą, ar mus visada kas nors stumia? Choras šiuos klausimus ne tik dainavo – jie juos nešė. Lengva nebūtų net profesionalams. O jie tai padarė su ramybe.</p>\n<p><strong>Pabaiga: mano šališkas epilogas</strong></p>\n<p>Po koncerto su komanda ir kūrėjais kalbėjome apie muziką, istorijas ir tą ypatingą choro kvėpavimą. Ir pajutau vieną deacon: aš labai myliu šį chorą. Ir nesiruošiu apsimesti kitaip. Tai ne recenzija. Tai – padėka. Ir labai šališkas pasididžiavimas, kad esu šio kelio dalis.</p>\n<p><strong>Padėka už nematomą, bet esminį darbą</strong></p>\n<p>Šis vakaras tokiu pavidalu, koks jis buvo, nebūtų įvykęs be Pax et Bonum komandos – Sigutė Augustinienė ir Vilija Grigonytė – idėjų, nuoseklaus darbo ir kantrybės. Nuo vizualizacijų idėjos gimimo, komunikacijos su vaizdo autore, techninių sprendimų, įžanginio vaizdo sukūrimo, iki papildomo finansavimo paieškų ir paties Michaelo Gordono atvykimo į Vilnių – tai buvo didelis, kompleksinis ir labai tyliai atliktas darbas. Už tai – nuoširdi padėka. Tokie koncertai gimsta tada, kai daug žmonių daro daugiau, nei parašyta jų pareigybėse.</p>\n<p>P. S. Ačiū, Simona Zajančauskaitė už tobulą organizaciją, šilumą ir meilę tam, ką darai. O darai - labai gerai.</p>\n"}, {"id": 2, "year": "2025", "title_en": "Metachronicle No. 2 — Kamertonas at 30", "title_lt": "Koncertų Metakronikos Nr. 2 — Kamertonui 30", "content_en": "\n<p>Kaunas has always been my musical home. I spent four years here at the Juozas Gruodis Conservatoire—rehearsals, dorm life, friends' wardrobes, and that constant feeling that life is only just beginning. Today, I returned for a special occasion—the 30th anniversary of the mixed choir Kamertonas. And not only memories returned, but also all my critical, spiritual, and slightly ridiculous inner reflections.</p>\n<p>I was sitting next to the oratorio composer Antanas Jasenka. His calmness was so immovable that it felt as though he had already resolved the entire work years ago. No tension, no anxiety—just a deep authorial state, which calmed me more than all the Philharmonic seats combined.</p>\n<p><strong>Choir “Kamertonas”</strong></p>\n<p>30 years on stage—and you can hear it. Sometimes tired, but never broken; sometimes overly serious, but always cohesive. Unison suits them like it suits people of this city—deep roots, a firm voice, and spirituality that emerges precisely when technique begins to tire. There was real fatigue in the middle, but that is exactly where something opened up—when music moves from the head into the heart.</p>\n<p><strong>Soloists</strong></p>\n<p>This evening, both soloists seemed to choose contrast over pure drama. Some lines descended into deeper registers, others suddenly leapt upwards, as if testing the acoustic limits of the hall. Not easy parts—definitely not easy. Around the middle, it felt like breath or energy was running low, and phrases were left slightly at the mercy of time. But that is precisely the charm of live performance: when the spiritual narrative becomes stronger than technical precision.</p>\n<p><strong>Saxophone</strong></p>\n<p>The saxophone—power. Such power that it felt like three concerts were happening simultaneously: one—for everyone, and two—for the saxophone. Every time it entered, it felt as though the universe itself rose slightly onto its toes—just to see what was happening.</p>\n<p><strong>Lighting</strong></p>\n<p>It seems the Philharmonic has launched a new contemporary project: “Visual Interpretations of Faces in Jasenka's Works.” Here white, there warm, elsewhere completely inexplicable—almost like an attempt to let us experience shifting colours of different epochs, from Persephone to a contemporary Maria. Or perhaps someone was simply experimenting with the lighting desk. Either way—the effect was conceptual enough that anything felt possible.</p>\n<p><strong>Orchestra</strong></p>\n<p>This time, the orchestra was not a backdrop (as sometimes happens with choirs), but a true ornament. Balanced, sensitive, present—without taking attention away, yet never allowing the whole to fade. And yes—let me remind you of the adventure from two days earlier: the conductor's lost baton. It was retrieved (almost from under a chair) by the second violin and successfully returned. Today, the baton remained safely in hand throughout the entire concert.</p>\n<p><strong>Audience (a Kaunas phenomenon)</strong></p>\n<p>One listener apparently felt the need to ground himself—he removed his shoes and spent half the concert tapping his feet in the front row. In Kaunas, there is a rule: before the piece begins—the audience is already ready, before the piece ends—the audience is already standing. I was momentarily confused, but my neighbour explained: — This is Kaunas. We support each other. And suddenly I understood: here, music is not something performers do—it is something everyone shares.</p>\n<p>At the end, the audience sang along to “Už Raseinių, ant Dubysos” and “Kur giria žaliuoja.” The same man who had taken off his shoes earlier now put them back on carefully—and stood to sing with everyone. In Kaunas, spirituality has rituals. Sometimes—very earthly ones.</p>\n<p><strong>Me and my hearing</strong></p>\n<p>Sometimes my hearing did not align with the choir, sometimes—with the soloists, sometimes—with the violin solo. Perhaps this is some internal conflict between antiquity, medievality, archaism, and modernity within me. Or perhaps I am simply like this—eternally inclined to complain a little, even when everything is, in essence, beautiful.</p>\n<p><strong>The words that stopped me</strong></p>\n<p>Amid all the evening's layers—the “two-concert saxophone,” the contrasting soloists, the lighting as an art installation—the choir suddenly sang: “If you knew how she loves, you would call your feeling a desert.” And at that moment, my inner critic simply gave up. After such a sentence, there is nothing left to comment on—only to pause and think briefly about one's own “deserts,” which, it turns out, both bloom and wound at the same time.</p>\n<p>Erika Drungytė's poetry—honestly—was stunning. Congratulations and thank you for this immense work and celebration, Kęstutis Jakeliūnas. Congratulations to Antanas Jasenka. Happy anniversary, Kamertonas.</p>\n<p>P.S. A more “professionally unprofessional” version of this review may land in 7md. This one, however—is about choir, Kaunas, spiritual layers, lighting improvisations, shoes, and that extraordinary saxophone that seemed to have its own independent contract. Good night.</p>\n", "content_lt": "\n<p>Kauną visada vadinu savo muzikiniais namais - čia praleidau ketverius metus J. Gruodžio konservatorijoje: repeticijos, bendrabutis, draugės spintose ir tas amžinas jausmas, kad gyvenimas tik prasideda.</p>\n<p>Šiandien sugrįžau ypatingai progai - mišraus choro „Kamertonas“ 30-mečiui. Ir grįžo ne tik prisiminimai, bet ir visi mano kritiški, dvasingi ir juokingi refleksai.</p>\n<p>Sėdėjau šalia oratorijos kompozitoriaus Antano Jasenkos. Jo ramybė buvo tokia nepajudinama, kad atrodė, jog visą kūrinį jis jau įveikė metų metais anksčiau. Jokios įtampos, jokio nerimo - tik gili „autoriaus būsena“, kuri mane nuramino labiau nei visi filharmonijos krėslai kartu sudėjus.</p>\n<p><strong>Choras „Kamertonas“</strong></p>\n<p>30 metų scenoje - ir tai girdisi. Kartais pavargę, bet niekada nepalūžę; kartais pernelyg rimti, bet visada darnūs. Unisonas jiems tiko kaip tikriems šio miesto žmonėms - šaknys gilios, balsas tvirtas, dvasingumas ateina tada, kai technika pavargsta. Viduryje tikrai buvo nuovargio, bet būtent ten ir įvyko tikras skleidimasis - toks, kai muzika pereina iš galvos į širdį.</p>\n<p><strong>Solistės</strong></p>\n<p>Šį vakarą abi solistės, atrodo, nusprendė pabūti labiau kontrastingos nei dramatiškos. Vienos partijos leidosi į gilesnius registrus, kitos šoktelėdavo aukštyn taip, lyg bandytų patikrinti salės lubų akustiką. Nelengvos partijos, tikrai nelengvos - atrodė, kad maždaug viduryje pritrūko jėgų ar oro, o frazės liko šiek tiek atviros laiko malonei. Bet tuo ir žavi gyvas atlikimas: kai dvasinė istorija stipresnė už techninę liniją.</p>\n<p><strong>Saksofonas</strong></p>\n<p>Saksofonas - jėga. Tokia jėga, kad atrodė, jog čia skamba trys koncertai vienu metu: vienas - visų, ir du - saksofono. Kaskart, kai jis pradėdavo groti, jausdavosi, kad visata pati truputį atsistoja ant pirštų galiukų - pasižiūrėti, kas čia dabar vyksta.</p>\n<p><strong>Apšvietimas</strong></p>\n<p>Atrodo, filharmonija pradėjo naują modernų projektą: „Veidų vizualinės interpretacijos Jasenkos kūryboje“. Vienur balta, kitur šilta, dar kitur visiškai nesuprantama - tarsi bandymas leisti mums pajusti skirtingų epochų spalvų kaitą nuo Persefonės iki šiuolaikinės Marijos. O gal tiesiog kažkas šiandien žaidė su pultu. Bet efektas buvo toks konceptualus, kad viskas įmanoma.</p>\n<p><strong>Orkestras</strong></p>\n<p>Orkestras šiandien buvo ne užuolaida, kaip kartais nutinka chorams, o tikra puošmena - išlaikęs balansą, dvasingumą, neatėmęs dėmesio, bet ir neleidęs aplinkai nublukti. Ir taip, primenu užvakar dienos nuotykį: pamestą dirigento batutą. Ją ištraukė (beveik iš po kėdės ) antras smuikas ir sėkmingai perdavė atgal į dirigento rankas. Šiandien batuta visą vakarą išbuvo vietoje.</p>\n<p><strong>Publika (kaunietiškas fenomenas)</strong></p>\n<p>Vienam klausytojui turbūt norėjosi įsižeminti, nes pametė savo batus į šoną ir trepsėjo pusę koncerto pirmoje eilėje. Kaune egzistuoja taisyklė: kūrinys dar neprasidėjęs - publika jau pasiruošusi, kūrinys dar nepasibaigęs - publika jau stovi. Aš akimirką sutrikau, bet kaimynė paaiškino: — Čia Kaunas. Mes vieni kitus labai palaikom. Ir supratau, kad čia muzika - ne atlikėjų, o visų bendras reikalas.</p>\n<p>Gale skambėjo „Už Raseinių, ant Dubysos“ ir „Kur giria žaliuoja“. Tas pats žmogus, kuris vidury koncerto buvo nusiavęs batus, dabar juos tvarkingai apsiavė ir atsistojo dainuoti su visais. Kaune dvasingumas turi ritualų. Kartais - ir labai žemiškų.</p>\n<p><strong>Aš ir mano klausa</strong></p>\n<p>Kartais mano klausa nesusiderino su choru, kartais - su solistėmis, kartais - su smuiko solo. Gal čia toks vidinis „antikos–viduramžių–archajikos–modernybės“ konfliktas manyje. O gal tiesiog aš tokia esu - amžinai linkusi šiek tiek pabambėti, net kai viskas iš esmės gražu.</p>\n<p><strong>Žodžiai, kurie mane netikėtai sustabdė</strong></p>\n<p>Tarp visų vakarinių nuotykių - saksofono „dviejų koncertų“, kontrastingų solisčių ir apšvietimo meno instaliacijos - choras staiga ištarė: „Jeigu jūs žinotumėte, kaip ji myli - Savo jausmą dykuma vadintumėt.“ Ir čia mano vidinė kritikė tiesiog nuleido rankas. Po tokio sakinio nebelieka ką komentuoti - tik trumpai pagalvoti apie savo pačios „dykumas“, kurios, pasirodo, ir žydi, ir bado vienu metu.</p>\n<p>Erikos Drungytės poezija, prisipažinsiu, tiesiog sužavėjo. Sveikinu ir ačiūūū už didelį darbą ir šventę, Kęstutis Jakeliūnas. Sveikinu Antaną Jasenką. Happy anniversary, Kamertonas.</p>\n<p>P. S. Labiau profesionali recenzijos versija galimai nutūps 7md. Ši one, however—is apie chorą, Kauną, dvasinius sluoksnius, apšvietimo improvizacijas, batus ir tą ypatingą saksofoną, kuris grojo lyg turėtų savo atskirą sutartį. Labanakt.</p>\n"}, {"id": 1, "year": "2025", "title_en": "Metachronicle No. 1 — LVSO Concert", "title_lt": "Koncertų Metakronikos Nr. 1 — LVSO koncertas", "content_en": "\n<p>NURON MUKUMI. Music critics usually annoy everyone. The orchestra, the audience—and often themselves. But today I decided not to be a critic, but simply a human being who went to a concert and tried not to move in the chair. And here is what I saw.</p>\n<p><strong>Part one. The pianist.</strong></p>\n<p>Wonderful. And the piano—so beautiful, so black, so luxurious—that for a moment I thought: maybe everything is because of the piano. No, I'm joking. The pianist was truly wow.</p>\n<p><strong>Berlioz — Marche au supplice</strong></p>\n<p>This is where things began. The conductor became so immersed that the baton decided to gain financial independence and simply flew away. I was not surprised—Berlioz always enjoyed this kind of chaos. How the conductor retrieved it? I will leave that for another, even more “professionally unprofessional” review.</p>\n<p><strong>A new sound effect</strong></p>\n<p>Let me officially introduce: “Wind instrument into a handkerchief, Op. Winter.” It sounded so convincing that I genuinely wondered which wind section it belonged to. A modern instrument. Very contemporary. My neighbour almost choked with laughter. A few orchestra players too. Even Berlioz, I think, would have appreciated the additional dramatic layer.</p>\n<p><strong>The conductor and the orchestra…</strong></p>\n<p>There were moments when it felt as though the conductor and the orchestra were searching for a shared pulse. The critic in me could invent all kinds of “nuanced observations,” but the listener in me thought something simpler: “Sometimes I also need time to align with life.” Let's call it a visible dramaturgical indecision.</p>\n<p>Why am I telling all this? Because I was unexpectedly photographed with the talented pianist Nuron Mukumi. Without context, it might have looked as though I simply hunt pianists in concert halls. Now, however—culture, review, seriousness. Kind of. Good night.</p>\n<p>P.S. Thank you to Laura Kar, whose presence always “switches on the ears.” LVSO Concert Hall</p>\n", "content_lt": "\n<p>NURON MUKUMI SKAMBINA J. BRAHMSĄ. Muzikos kritikai dažniausiai erzina visus. Ir orkestrą, ir publiką, ir net patys save. Bet šiandien nusprendžiau pabūti ne kritike, o žmogumi, kuris tiesiog ėjo į koncertą ir dar bandė nejudėti kėdėje. Ir štai ką pamačiau.</p>\n<p><strong>Pirma dalis. Pianistas.</strong></p>\n<p>Nuostabus. Ir pianinas toks gražus, toks juodas, toks prabangus, kad akimirką pamaniau – gal čia viskas dėl to pianino. Ne, juokauju. Pianistas tikrai wow.</p>\n<p><strong>Berliozo „Marche au supplice\"</strong></p>\n<p>Čia jau prasidėjo veiksmas. Dirigentas taip įsijautė, kad batuta nusprendė finansiškai nepriklausyti ir tiesiog nuskrido. Aš dėl to nenustebau – Berliozas visada tokį chaosą mėgo. Kaip dirigentas jį atsiėmė? Paliksiu kitai – dar labiau „profesionaliai neprofesionaliai“ recenzijai.</p>\n<p><strong>O dar vienas garsinis efektas – visiškai naujas.</strong></p>\n<p>Oficialiai pristatau: „Pučiamasis į nosinę, opusas žiema“. Nuskambėjo taip solidžiai, kad rimtai svarsčiau, kuriai pučiamųjų kategorijai priklauso.. Modernus instrumentas, labai šiuolaikiškas. Kaimynas beveik užspringo juoku. Keli orkestrantai irgi. Net Berliozas, man atrodo, būtų patenkintas papildoma dramine linija.</p>\n<p><strong>O dirigentas ir orkestras…</strong></p>\n<p>Buvo keli momentai, kai atrodė, jog dirigentas ir orkestras ieško vienas kito bendro ritmo. Kritikė manyje galėtų čia prigalvoti visokių „niuansų“, bet klausytoja manyje pagalvojo paprasčiau: „Na, ir man pačiai kartais prireikia laiko susiderinti su gyvenimu.“ Sakyčiau - čia įvyko akivaizdus dramaturginis neapsisprendimas.</p>\n<p>O kodėl viską čia pasakoju? Nes mane netikėtai nufotografavo su talentingu pianistu Nuron Mukumi. Be konteksto būtų atrodę, kad aš šiaip sau medžioju pianistus koncertų salėse. Dabar gi – kultūra, recenzija, rimtis. Šiaip jau. Labanakt.</p>\n<p>P. S. Ačiū Laūra Kar, kurios vedimas visada \"įjungia ausis\". LVSO koncertų salė</p>\n"}];
+        let currentLang = 'en';
+
+        function renderList() {
+            const list = document.getElementById('metachronicles-list');
+            list.innerHTML = '';
+            
+            metachronicles.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'metachronicle-item';
+                div.style.animationDelay = `${0.1 * (index + 1)}s`;
+                
+                const title = currentLang === 'en' ? item.title_en : item.title_lt;
+                const content = currentLang === 'en' ? item.content_en : item.content_lt;
+                
+                div.innerHTML = `
+                    <span class="metachronicle-status">${item.year}</span>
+                    <h2 class="metachronicle-title">${title}</h2>
+                    <div class="metachronicle-preview">${content}</div>
+                    <a class="read-more" onclick="openModal(${index})">
+                        <span data-en="Read full text" data-lt="Skaityti visą tekstą">${currentLang === 'en' ? 'Read full text' : 'Skaityti visą tekstą'}</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function openModal(index) {
+            const item = metachronicles[index];
+            const title = currentLang === 'en' ? item.title_en : item.title_lt;
+            const content = currentLang === 'en' ? item.content_en : item.content_lt;
+            
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-body').innerHTML = content;
+            document.getElementById('modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('modal-close').onclick = closeModal;
+        window.onclick = (event) => {
+            if (event.target == document.getElementById('modal')) {
+                closeModal();
+            }
+        };
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.onclick = () => {
+                currentLang = btn.getAttribute('data-lang');
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Update static texts
+                document.querySelectorAll('[data-en]').forEach(el => {
+                    const val = el.getAttribute(`data-${currentLang}`);
+                    if (val) el.innerText = val;
+                });
+                
+                renderList();
+            };
+        });
+
+        renderList();
+    </script>
+</body>
+</html>
